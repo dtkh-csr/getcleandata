@@ -10,3 +10,5 @@ b. read the names of measurements containing "mean()" and "std()" to filter out 
 4. combine the 3 tables in step #3 into 1 clean dataset
 5. create a second, independent tidy dataset containing average of each variable for each activity and each subject
 6. write both datasets into 2 csv files along with 2 txt files
+
+The codebook "codebook.txt" describes all columns and entries for both the cleaned dataset and averaged dataset.
