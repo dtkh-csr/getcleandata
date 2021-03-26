@@ -46,6 +46,8 @@ combined_dataset <- arrange(combined_dataset, Subject)
 #create another dataset of variable/measurement averages for each activity and each subject
 averaged_dataset <- combined_dataset %>% group_by(Activity, Subject) %>% summarise_all(.funs = c(mean="mean"))
 
-#write the datasets into csv files
+#write the datasets into csv files and txt files
 write.csv(combined_dataset, "clean_dataset.csv", row.names = FALSE)
 write.csv(averaged_dataset, "averaged_dataset.csv", row.names = FALSE)
+write.table(combined_dataset, "clean_dataset.txt", row.names = FALSE)
+write.table(averaged_dataset, "averaged_dataset.txt", row.names = FALSE)
