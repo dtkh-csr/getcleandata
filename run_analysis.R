@@ -24,11 +24,11 @@ combinedsubjects_df <- do.call("rbind", lapply(subjects_df, function(x) {as.data
 #read y_train.txt and y_test.txt into column "Activity" of a table
 activity_list = list.files(pattern="^y_t*", recursive = TRUE) 
 # Read the files into column "Activity"
-activities_df <- lapply(activity_list, function(x) {read.table (file = x, col.names = "Activity")})
+activities_df <- lapply(activity_list, function(x) {read.table (file = x, col.names = "Act")})
 # Combine them
 combinedactivities_df <- do.call("rbind", lapply(activities_df, function(x) {as.data.frame(x, check.names=FALSE)})) 
 #replace activity numbers with their corresponding activity names/description
-combnamedactivities_df <- combinedactivities_df %>% merge(activity_ref, by.x="Activity", by.y="ID") %>% select(2)
+combnamedactivities_df <- combinedactivities_df %>% merge(activity_ref, by.x="Act", by.y="ID") %>% select(2)
 
 #read X_train.txt and X_test.txt into measurement mean/standard-deviation columns of a table
 measurement_list = list.files(pattern="^X_t*", recursive = TRUE) 
@@ -43,5 +43,9 @@ combined_dataset <- do.call("cbind", list(combinedsubjects_df, combnamedactiviti
 #sort the dataset according to ascending subject IDs
 combined_dataset <- arrange(combined_dataset, Subject)
 
-#write the dataset into a csv file
+#create another dataset of variable/measurement averages for each activity and each subject
+averaged_dataset <- combined_dataset %>% group_by(Activity, Subject) %>% summarise_all(.funs = c(mean="mean"))
+
+#write the datasets into csv files
 write.csv(combined_dataset, "clean_dataset.csv", row.names = FALSE)
+write.csv(averaged_dataset, "averaged_dataset.csv", row.names = FALSE)
